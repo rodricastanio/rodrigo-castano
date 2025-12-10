@@ -147,7 +147,7 @@ export const Projects = () => {
         <div className="text-center mt-12">
           <a
             target="_blank"
-            href="https://github.com/abhicodes01"
+            href="https://github.com/rodricastanio"
             className="cosmic-button w-fit flex items-center mx-auto gap-2"
           >
             Chequea Mi Github <ArrowRight size={16} />
