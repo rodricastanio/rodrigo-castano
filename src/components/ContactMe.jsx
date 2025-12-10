@@ -16,7 +16,7 @@ export const ContactMe = () =>{
 
     const SERVICE_ID = "service_6uu0u4c";
     const TEMPLATE_ID = "template_nov41ge";
-    const PUBLIC_KEY = "-rX2W7hyYPy4FVA2b";
+    const PUBLIC_KEY = "Z1BCHklq9W8Px8M_M";
     const sendEmail = (e) => {
   e.preventDefault();
 
