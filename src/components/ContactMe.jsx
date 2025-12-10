@@ -14,9 +14,9 @@ export const ContactMe = () =>{
         message:""
     })
 
-    const SERVICE_ID = "service_onk2n7c";
-    const TEMPLATE_ID = "template_5tzx358";
-    const PUBLIC_KEY = "Si2NzaIVbvb8uZ1l4";
+    const SERVICE_ID = "service_6uu0u4c";
+    const TEMPLATE_ID = "template_nov41ge";
+    const PUBLIC_KEY = "-rX2W7hyYPy4FVA2b";
     const sendEmail = (e) => {
   e.preventDefault();
 
