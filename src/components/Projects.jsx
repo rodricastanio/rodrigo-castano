@@ -6,71 +6,89 @@ import { useEffect } from "react";
 const projects = [
   {
     id: 1,
-    title: "Softude - Website Landing Page",
-    description:
-      "Softude is a global IT & digital-services company that offers enterprise-level solutions such as web and mobile app development, digital transformation, AI & cloud services, ",
-    image: "/Projects/Softude.png",
-    tags: ["React.js", "Framer Motion", "TailwindCSS", "Vite"],
-    url: "https://softude.netlify.app/",
-    git: "https://github.com/abhicodes01/Softude_Redesign_LandingPage",
+    title: "Spott",
+    description: "Spott es una plataforma web que conecta organizadores con asistentes. Permite a las empresas gestionar y promocionar eventos centralizando el feedback, mientras que los usuarios descubren experiencias personalizadas según sus gustos, ubicación y música, gracias a la integración con Spotify.",
+    image: "/Projects/project-4.jpeg",
+    tags: ["React.js", "React Router", "TailwindCSS", "Vite", "node.js", "express.js", "typescript", "Prisma ORM", "supabase", "Zod", "JWT", "postgreSQL", "Docker"],
+    url: "https://utn-ds-25-grupo-05.vercel.app/",
+    git: "https://github.com/IstFranco/UTN-DS25-Grupo-05",
   },
 
   {
     id: 2,
-    title: "Mech2Door",
+    title: "Clima AR",
     description:
-      "A full-stack MERN web app connecting users with verified local mechanics, featuring real-time booking, admin verification, and secure authentication for trusted on-demand service.",
-    image: "/Projects/Mech2Door.png",
+      "Aplicación web interactiva que consume APIs externas para brindar información climática en tiempo real de distintas ubicaciones, diseño responsive adaptable, interfaz moderna e intuitiva, enfoque en la experiencia del usuario.",
+    image: "/Projects/project-2.jpg",
     tags: [
       "Node.js",
-      "MongoDB",
-      "Express.js",
-      "PostMan",
-      "TailwindCSS",
+      "HTML",
+      "Javascript",
+      "CSS",
       "React.js",
+      "Vite",
     ],
-    url: "#",
-    git: "#",
+    url: "https://clima-ar-rc.vercel.app/",
+    git: "https://github.com/rodricastanio/clima-ar",
   },
 
   {
     id: 3,
-    title: "VirtualR - Developer Tools Website",
+    title: "Malla Curricular Interactiva",
     description:
-      "A dynamic and responsive virtual reality showcase built with React, featuring sleek UI and interactive components.",
-    image: "/Projects/VirtualR.png",
-    tags: ["Javascript", "TailwindCSS", "React.js", "Vite"],
-    url: "https://virtualr-react.netlify.app/",
-    git: "#",
+      "Aplicación móvil desarrollada con React Native y Expo para visualizar el plan de estudios de Ingeniería en Sistemas. Permite filtrar por año, correlatividades y estado de cursada, con sistema de login y una interfaz amigable y colorida.",
+    image: "/Projects/project-1.png",
+    tags: ["Javascript", "HTML", "React.js", "Vite", "CSS"],
+    url: "https://malla-utn-sistemas.vercel.app/",
+    git: "https://github.com/rodricastanio/malla-utn-ing-sistemas",
   },
 
   {
     id: 4,
-    title: "Jarvis - AI Personal Assistant",
+    title: "Crónicas de Tinta",
     description:
-      "Jarvis listens to voice commands, responds in real-time with speech output, and features a dynamic 3D animated interface for an immersive experience.",
-    image: "/Projects/Jarvis.png",
+      "Librería virtual personal llamada 'Crónicas de Tina', que permite búsqueda avanzada, filtros personalizados y carrito de compras. Desarrollada con React para una experiencia de usuario rápida y amigable.",
+    image: "/Projects/project-3.png",
     tags: [
       "React.js",
       "TailwindCSS",
-      "Three.js",
-      "Gemini API",
-      "SpeechRecognition",
+      "HTML",
+      "TypeScript",
+      "Express.js",
+      "Prisma",
     ],
     url: "#",
-    git: "https://github.com/abhicodes01/voice-assistant-jarvis",
+    git: "https://github.com/rodricastanio/UTN-DS25-practicas/tree/main/react-con-api",
   },
-
   {
     id: 5,
-    title: "SynergyTop - Website Landing Page",
+    title: "Gestion de turnos Psicologicos",
     description:
-      "SynergyTop is presented as a full-service IT agency offering services such as custom software development, web development, eCommerce & mobile-app development",
-    image: "/Projects/SynergyTop.png",
-    tags: ["React.js", "TailwindCSS", "Framer Motion", "Vite"],
-    url: "https://synergytop.netlify.app/",
-    git: "https://github.com/abhicodes01/StrategyTop_Redesign_LandingPage",
+      "Plataforma web integral para optimizar la captación de pacientes y la gestión de turnos en consultorios psicológicos. Centraliza la oferta de servicios y permite al paciente solicitar citas mediante un calendario inteligente.",
+    image: "/Projects/project-5.png",
+    tags: [
+      "HTML",
+      "JavaScript",
+      "CSS",
+    ],
+    url: "https://nicolas-francioli.vercel.app/",
+    git: "https://github.com/rodricastanio/NicolasFrancioli",
   },
+  {
+    id: 6,
+    title: "Invitacion virtual de evento",
+    description: 
+    "pagina web que sirve como invitacion virtual para un evento especial, con informacion relevante, galeria de imagenes y confirmacion de asistencia.",
+    image: "/Projects/project-6.jpeg",
+    tags: [
+      "HTML",
+      "JavaScript",
+      "CSS",
+    ],
+    url: "https://invitacion-virtual-xv.vercel.app/",
+    git: "https://github.com/rodricastanio/invitacion-virtual",
+  }
+
 ];
 
 export const Projects = () => {
@@ -133,7 +151,7 @@ export const Projects = () => {
                   </a>
 
                   <a
-                    href={project.git}
+                    href={project.git} target="_blank"
                     className="text-foreground hover:text-primary transition-colors duration-300"
                   >
                     <Github />
