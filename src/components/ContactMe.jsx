@@ -73,7 +73,7 @@ useEffect(() => {
 
                             <div>
                                 <h4 className="font-medium text-left">LinkedIn :</h4>
-                                <a href="www.linkedin.com/in/rodrigocastano"
+                                <a href="https://www.linkedin.com/in/rodrigocastano"
                                  target="_blank"
                                   className="text-muted-foreground text-left hover:text-primary transition-colors duration-300"
                                 >
