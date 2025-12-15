@@ -58,7 +58,8 @@ useEffect(() => {
 
                             <div>
                                 <h4 className="font-medium text-left">Email :</h4>
-                                <a href=""
+                                <a href="mailto:rodrigodcasta@gmail.com"
+                                target="_blank"
                                   className="text-muted-foreground text-left hover:text-primary transition-colors duration-300"
                                 >
                                     rodrigodcasta@gmail.com
