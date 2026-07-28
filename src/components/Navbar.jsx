@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { cn } from "../lib/utils";
 import { Menu, X } from "lucide-react";
-
-const navItems = [
-    {name: 'Home', url: '#home'},
-    {name: 'Sobre mi', url: '#about'},
-    {name: 'Habilidades', url: '#skills'},
-    {name: 'Proyectos', url: '#projects'},
-    {name: 'Contacto', url: '#contact'},
-];
+import { useLanguage } from "../lib/language-context";
 
 export const Navbar = () => {
+    const { t } = useLanguage();
+    const navItems = [
+        {name: t("nav.home"), url: '#home'},
+        {name: t("nav.about"), url: '#about'},
+        {name: t("nav.skills"), url: '#skills'},
+        {name: t("nav.projects"), url: '#projects'},
+        {name: t("nav.contact"), url: '#contact'},
+    ];
     const[isScrolled,setIsScrolled] = useState(true);
     const[isMenuOpen,setIsMenuOpen] = useState(false);
 
@@ -30,7 +31,7 @@ export const Navbar = () => {
         <div className="container flex items-center justify-between md:justify-around">
             <a className="font-bold text-xl text-primary flex items-center" href="#home">
                 <span className="relative z-10">
-                    <span className="text-glow text-foreground">Rodrigo Castaño</span> Portafolio
+                    <span className="text-glow text-foreground">Rodrigo Castaño</span> {t("nav.portfolio")}
                 </span>
             </a>
 
@@ -48,7 +49,7 @@ export const Navbar = () => {
 
             <button onClick={()=> setIsMenuOpen((prev)=> !prev)} 
                     className="md:hidden p-2 mr-8 text-foreground z-50 cursor-pointer"
-                    aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+                    aria-label={isMenuOpen ? t("nav.closeMenu") : t("nav.openMenu")}
             >
                 {isMenuOpen ? <X size={24}/> : <Menu size={24}/>}
             </button>

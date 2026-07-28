@@ -3,6 +3,7 @@ import { cn } from "../lib/utils";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
+import { useLanguage } from "../lib/language-context";
 
 const skills = [
     // FRONTEND
@@ -35,13 +36,18 @@ const skills = [
     { name: "Figma", level: 85, category: "herramientas", logo: "/Images/Figma.png" },
 ]
 
-const categories = ["todo", "frontend", "backend", "herramientas"]
-
 export const SkillsSection = () => {
+    const { t } = useLanguage();
+    const categories = [
+        { key: "all", label: t("skills.all") },
+        { key: "frontend", label: t("skills.frontend") },
+        { key: "backend", label: t("skills.backend") },
+        { key: "herramientas", label: t("skills.tools") },
+    ]
 
-    const [activeCategory, setActiveCategory] = useState("todo");
+    const [activeCategory, setActiveCategory] = useState("all");
 
-    const filteredSkills = skills.filter((skill) => activeCategory === "todo" || skill.category === activeCategory);
+    const filteredSkills = skills.filter((skill) => activeCategory === "all" || skill.category === activeCategory);
 
     useEffect(() => {
         AOS.init({
@@ -53,18 +59,18 @@ export const SkillsSection = () => {
     return <section id="skills" className="py-24 px-4 relative bg-secondary/30">
         <div data-aos="fade-up" className="container mx-auto max-w-5xl">
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-                Mis <span className="text-primary">Habilidades</span>
+                {t("skills.title")} <span className="text-primary">{t("skills.titleHighlight")}</span>
             </h2>
 
             <div className="flex flex-wrap justify-center gap-4 mb-12">
-                {categories.map((category, key) => (
+                {categories.map((cat, key) => (
                     <button
                         key={key}
-                        onClick={() => setActiveCategory(category)}
+                        onClick={() => setActiveCategory(cat.key)}
                         className={cn("px-5 py-2 rounded-full trasnition-colors duration-300 capitalize",
-                            activeCategory === category ? "bg-primary text-primary-foreground" : "bg-secondary/70 text-foreground hover:bg-secondary",
+                            activeCategory === cat.key ? "bg-primary text-primary-foreground" : "bg-secondary/70 text-foreground hover:bg-secondary",
                         )}>
-                        {category}
+                        {cat.label}
                     </button>
                 ))}
             </div>

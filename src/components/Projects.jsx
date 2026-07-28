@@ -2,6 +2,7 @@ import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import { useLanguage } from "../lib/language-context";
 
 const projects = [
   {
@@ -69,26 +70,33 @@ const projects = [
 ];
 
 export const Projects = () => {
+  const { t } = useLanguage();
   useEffect(() => {
     AOS.init({
       duration: 1000,
-      once: false, // animation happens only once
+      once: false,
     });
   }, []);
+
+  const translatedProjects = projects.map((project, index) => ({
+    ...project,
+    title: t("projectsData." + index + ".title"),
+    description: t("projectsData." + index + ".description"),
+  }))
 
   return (
     <section id="projects" className="py-24 px-4 relative">
       <div data-aos="fade-up" className="container mx-auto max-w-5xl">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-          Proyectos <span className="text-primary">Destacados</span>
+          {t("projects.title")} <span className="text-primary">{t("projects.titleHighlight")}</span>
         </h2>
 
         <p className="txet-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Estos proyectos reflejan mi enfoque en escribir código limpio y fácil de mantener, así como en crear interfaces intuitivas. Me he centrado en soluciones prácticas que equilibran rendimiento, usabilidad y fiabilidad.
+          {t("projects.description")}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, key) => (
+          {translatedProjects.map((project, key) => (
             <div
               key={key}
               className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover"
@@ -124,7 +132,7 @@ export const Projects = () => {
                     rel="noopener noreferrer"
                     className="cosmic-button text-xs text-muted-foreground font-semibold flex gap-1"
                   >
-                    Enlace En Vivo <ArrowUpRight size={16} />
+                    {t("projects.liveLink")} <ArrowUpRight size={16} />
                   </a>
 
                   <a
@@ -145,7 +153,7 @@ export const Projects = () => {
             href="https://github.com/rodricastanio"
             className="cosmic-button w-fit flex items-center mx-auto gap-2"
           >
-            Chequea Mi Github <ArrowRight size={16} />
+            {t("projects.checkGithub")} <ArrowRight size={16} />
           </a>
         </div>
       </div>
