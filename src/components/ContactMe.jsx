@@ -1,6 +1,6 @@
 import { Github, Instagram, Linkedin, Mail, MapPin, Send, Twitter } from "lucide-react"
 import { cn } from "../lib/utils";
-import emailjs, { sendForm } from 'emailjs-com';
+import emailjs from 'emailjs-com';
 import { useState } from "react";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
