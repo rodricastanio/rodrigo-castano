@@ -1,8 +1,10 @@
-import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { useEffect } from "react";
+import { useRef } from "react";
+import { motion, useMotionValue } from "framer-motion";
+import { ArrowRight, Github, ExternalLink } from "lucide-react";
+import { useState } from "react";
 import { useLanguage } from "../lib/language-context";
+import { ProjectModal } from "./ProjectModal";
+import { staggerContainer, fadeUp } from "../lib/animations";
 
 const projects = [
   {
@@ -69,14 +71,74 @@ const projects = [
   }
 ];
 
+const techIcons = {
+  "React": "/Images/molecule_10285707.png",
+  "React.js": "/Images/molecule_10285707.png",
+  "React Native": "/Images/molecule_10285707.png",
+  "Node.js": "/Images/programing_15484303.png",
+  "TypeScript": "/Images/typescript_5968381.png",
+  "typescript": "/Images/typescript_5968381.png",
+  "Javascript": "/Images/js_5968292.png",
+  "JavaScript": "/Images/js_5968292.png",
+  "HTML": "/Images/html-5_5968267.png",
+  "CSS": "/Images/css-3_5968242.png",
+  "TailwindCSS": "/Images/Tailwind CSS.png",
+  "Tailwind CSS": "/Images/Tailwind CSS.png",
+  "Docker": "/Images/docker.png",
+  "PostgreSQL": "/Images/postgresql.png",
+  "postgreSQL": "/Images/postgresql.png",
+  "Prisma ORM": "/Images/prisma.png",
+  "Prisma": "/Images/prisma.png",
+  "Firebase": "/Images/supabase.jpg",
+  "supabase": "/Images/supabase.jpg",
+  "Express.js": "/Images/icons8-express-js (1).svg",
+  "express.js": "/Images/icons8-express-js (1).svg",
+  "GitHub Actions": "/Images/Git.png",
+  "Vite": "/Images/Vite.js.png",
+  "Expo": "/Images/Vite.js.png",
+}
+
+function TiltCard({ children, className, onClick }) {
+  const ref = useRef(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const handleMouse = (e) => {
+    const rect = ref.current?.getBoundingClientRect()
+    if (!rect) return
+    const px = (e.clientX - rect.left) / rect.width - 0.5
+    const py = (e.clientY - rect.top) / rect.height - 0.5
+    x.set(px * 20)
+    y.set(-py * 20)
+  }
+
+  const handleLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={handleLeave}
+      onClick={onClick}
+      style={{ perspective: 1200 }}
+      className={className}
+    >
+      <motion.div
+        style={{ rotateX: y, rotateY: x }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  )
+}
+
 export const Projects = () => {
   const { t } = useLanguage();
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-    });
-  }, []);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const translatedProjects = projects.map((project, index) => ({
     ...project,
@@ -85,78 +147,85 @@ export const Projects = () => {
   }))
 
   return (
-    <section id="projects" className="py-24 px-4 relative">
-      <div data-aos="fade-up" className="container mx-auto max-w-5xl">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+    <motion.section
+      id="projects"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      variants={staggerContainer}
+      className="py-24 px-4 relative snap-section"
+    >
+      <div className="container mx-auto max-w-6xl">
+        <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold mb-4 text-center">
           {t("projects.title")} <span className="text-primary">{t("projects.titleHighlight")}</span>
-        </h2>
+        </motion.h2>
 
-        <p className="txet-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+        <motion.p variants={fadeUp} className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
           {t("projects.description")}
-        </p>
+        </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {translatedProjects.map((project, key) => (
-            <div
+            <TiltCard
               key={key}
-              className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover"
+              onClick={() => setSelectedProject(project)}
+              className="cursor-pointer"
             >
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover trasnition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
-
-              <div className="p-6">
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {project.tags.map((tag) => (
-                    <span className="px-2 py-1 border text-xs rounded-full bg-secondary text-secondary-foreground ">
-                      {tag}
-                    </span>
-                  ))}
+              <div className="glass rounded-2xl overflow-hidden h-full group">
+                <div className="h-48 overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
 
-                <h3 className="text-xl text-left font-semibold mb-3">
-                  {project.title}
-                </h3>
-                <p className="text-muted-foreground text-left text-xs mb-4">
-                  {project.description}
-                </p>
+                <div className="p-6 text-left">
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="inline-flex items-center gap-1 px-2 py-1 border text-xs rounded-full bg-secondary text-secondary-foreground">
+                        {techIcons[tag] && (
+                          <img src={techIcons[tag]} alt="" className="w-3.5 h-3.5" />
+                        )}
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
-                <div className="flex justify-between items-center">
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cosmic-button text-xs text-muted-foreground font-semibold flex gap-1"
-                  >
-                    {t("projects.liveLink")} <ArrowUpRight size={16} />
-                  </a>
+                  <h3 className="text-xl font-semibold mb-3">{project.title}</h3>
+                  <p className="text-muted-foreground text-xs mb-4 line-clamp-3">{project.description}</p>
 
-                  <a
-                    href={project.git} target="_blank"
-                    className="text-foreground hover:text-primary transition-colors duration-300"
-                  >
-                    <Github />
-                  </a>
+                  <div className="flex justify-between items-center" onClick={(e) => e.stopPropagation()}>
+                    {project.url && project.url !== "#" ? (
+                      <a href={project.url} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold transition-all duration-300 hover:shadow-[0_0_10px_rgba(26,140,255,0.4)]">
+                        {t("projects.liveLink")} <ExternalLink size={14} />
+                      </a>
+                    ) : (
+                      <span className="px-3 py-1.5 rounded-full bg-secondary text-muted-foreground text-xs cursor-default">Coming Soon</span>
+                    )}
+                    <a href={project.git} target="_blank" rel="noopener noreferrer"
+                      className="text-foreground hover:text-primary transition-colors duration-300">
+                      <Github />
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
+            </TiltCard>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <a
-            target="_blank"
-            href="https://github.com/rodricastanio"
-            className="cosmic-button w-fit flex items-center mx-auto gap-2"
-          >
+        {selectedProject && (
+          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        )}
+
+        <motion.div variants={fadeUp} className="text-center mt-12">
+          <a target="_blank" href="https://github.com/rodricastanio"
+            className="cosmic-button w-fit flex items-center mx-auto gap-2">
             {t("projects.checkGithub")} <ArrowRight size={16} />
           </a>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };

@@ -8,13 +8,20 @@ export const StarBackground = () => {
         generateStars();
         generateMeteors();
 
+        let resizeTimer;
         const handleResize = () =>{
-            generateStars();
-            generateMeteors();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                generateStars();
+                generateMeteors();
+            }, 200);
         };
 
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            clearTimeout(resizeTimer);
+        };
            
     }, []);
 

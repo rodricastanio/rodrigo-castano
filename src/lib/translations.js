@@ -62,6 +62,11 @@ export const es = {
     alertSuccess: "¡Mensaje enviado con éxito!",
     alertError: "Algo salió mal",
   },
+  stats: {
+    years: "Años de Estudio",
+    technologies: "Tecnologías",
+    projects: "Proyectos",
+  },
   footer: {
     rights: "todos los derechos reservados.",
   },
@@ -156,6 +161,11 @@ export const en = {
     submit: "Send Message",
     alertSuccess: "Message sent successfully!",
     alertError: "Something went wrong",
+  },
+  stats: {
+    years: "Years of Study",
+    technologies: "Technologies",
+    projects: "Projects",
   },
   footer: {
     rights: "all rights reserved.",

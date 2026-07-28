@@ -1,9 +1,8 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
+import { motion } from "framer-motion"
 import { cn } from "../lib/utils";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { useEffect } from 'react';
 import { useLanguage } from "../lib/language-context";
+import { staggerContainer, fadeUp } from "../lib/animations";
 
 const skills = [
     // FRONTEND
@@ -46,61 +45,86 @@ export const SkillsSection = () => {
     ]
 
     const [activeCategory, setActiveCategory] = useState("all");
+    const [visibleBars, setVisibleBars] = useState({});
+    const barRefs = useRef({});
 
     const filteredSkills = skills.filter((skill) => activeCategory === "all" || skill.category === activeCategory);
 
     useEffect(() => {
-        AOS.init({
-            duration: 1000,
-            once: false, // animation happens only once
+        const observers = [];
+        Object.entries(barRefs.current).forEach(([key, el]) => {
+            if (!el) return;
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setVisibleBars((prev) => ({ ...prev, [key]: true }));
+                        observer.unobserve(el);
+                    }
+                },
+                { threshold: 0.3 }
+            );
+            observer.observe(el);
+            observers.push(observer);
         });
-    }, []);
+        return () => observers.forEach((o) => o.disconnect());
+    }, [filteredSkills]);
 
-    return <section id="skills" className="py-24 px-4 relative bg-secondary/30">
-        <div data-aos="fade-up" className="container mx-auto max-w-5xl">
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-                {t("skills.title")} <span className="text-primary">{t("skills.titleHighlight")}</span>
-            </h2>
+    return (
+        <motion.section
+            id="skills"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={staggerContainer}
+            className="py-24 px-4 relative bg-secondary/30 snap-section"
+        >
+            <div className="container mx-auto max-w-5xl">
+                <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    {t("skills.title")} <span className="text-primary">{t("skills.titleHighlight")}</span>
+                </motion.h2>
 
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-                {categories.map((cat, key) => (
-                    <button
-                        key={key}
-                        onClick={() => setActiveCategory(cat.key)}
-                        className={cn("px-5 py-2 rounded-full trasnition-colors duration-300 capitalize",
-                            activeCategory === cat.key ? "bg-primary text-primary-foreground" : "bg-secondary/70 text-foreground hover:bg-secondary",
-                        )}>
-                        {cat.label}
-                    </button>
-                ))}
-            </div>
+                <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4 mb-12">
+                    {categories.map((cat, key) => (
+                        <button
+                            key={key}
+                            onClick={() => setActiveCategory(cat.key)}
+                            className={cn("px-5 py-2 rounded-full transition-colors duration-300 capitalize",
+                                activeCategory === cat.key
+                                    ? "bg-primary text-primary-foreground gradient-border-glow"
+                                    : "bg-secondary/70 text-foreground hover:bg-secondary",
+                            )}>
+                            {cat.label}
+                        </button>
+                    ))}
+                </motion.div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
-                {filteredSkills.map((skill, key) => (
-                    <div key={key} className="sm:bg-card sm:p-6 sm:rounded-lg sm:shadow-xs card-hover" >
-
-                        <div className="flex items-center bg-card p-4 sm:bg-none sm:p-0 rounded-full justify-center sm:space-x-6">
-                            <div className="sm:h-6 sm:w-6 sm:mb-4">
-                                <img className="h-9 sm:h-6" src={skill.logo} alt="" />
+                <motion.div variants={fadeUp} className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {filteredSkills.map((skill, key) => (
+                        <div key={key} className="glass rounded-2xl p-4 sm:p-6 card-hover">
+                            <div className="flex flex-col items-center gap-2">
+                                <img className="h-9 sm:h-8" src={skill.logo} alt={skill.name + " logo"} />
+                                <h3 className="font-semibold text-sm sm:text-base">{skill.name}</h3>
                             </div>
 
-                            <div className="hidden sm:flex mb-4">
-                                <h3 className="font-semibold text-lg">{skill.name}</h3>
+                            <div className="mt-4 w-full bg-secondary/50 h-2 rounded-full overflow-hidden">
+                                <div
+                                    ref={(el) => (barRefs.current[key] = el)}
+                                    className="bg-primary h-2 rounded-full origin-left"
+                                    style={{
+                                        width: skill.level + "%",
+                                        transform: visibleBars[key] ? "scaleX(1)" : "scaleX(0)",
+                                        transition: "transform 1.5s ease-out",
+                                    }}
+                                />
+                            </div>
+
+                            <div className="flex justify-end mt-1">
+                                <span className="text-xs text-muted-foreground">{skill.level}%</span>
                             </div>
                         </div>
-
-                        <div className="hidden sm:flex w-full bg-secondary/50 h-2 rounded-full overflow-hidden ">
-                            <div className="bg-primary h-2 rounded-full origin-left animate-grow_1.5s_ease-out"
-                                style={{ width: skill.level + "%" }}
-                            />
-                        </div>
-
-                        <div className="hidden sm:flex justify-end text-right mt-1">
-                            <span className="text-sm text-muted-foregound">{skill.level}%</span>
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </motion.div>
             </div>
-        </div>
-    </section>
+        </motion.section>
+    )
 }
